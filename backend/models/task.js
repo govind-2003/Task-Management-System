@@ -36,6 +36,12 @@ const taskSchema = new mongoose.Schema({
     attachments: [{
         fileName: String,
         fileUrl: String,
+        filePath: String,
+        fileType: {
+            type: String,
+            enum: ['pdf'],
+            default: 'pdf' // Set default value instead of required
+        },
         uploadDate: {
             type: Date,
             default: Date.now

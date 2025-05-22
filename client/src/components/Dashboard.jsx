@@ -1,89 +1,135 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
+import TaskList from './TaskList';
+import UserList from './UserList';
+import UserProfile from './UserProfile';
+import api from '../utils/axios';
 
-const initialTasks = [
-    { id: 1, title: "Design UI", status: "In Progress" },
-    { id: 2, title: "Set up backend", status: "Pending" },
-    { id: 3, title: "Write documentation", status: "Completed" },
-];
+const Dashboard = () => {
+    const [user, setUser] = useState(null);
+    const [tasks, setTasks] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('tasks');
+    const navigate = useNavigate();
 
-const statusColors = {
-    "Pending": "#fbbf24",
-    "In Progress": "#3b82f6",
-    "Completed": "#10b981",
-};
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
 
-function Dashboard() {
-    const [tasks, setTasks] = useState(initialTasks);
-    const [newTask, setNewTask] = useState("");
+        const fetchData = async () => {
+            try {
+                const [userResponse, tasksResponse] = await Promise.all([
+                    api.get('/users/profile'),
+                    api.get('/tasks')
+                ]);
 
-    const handleAddTask = (e) => {
-        e.preventDefault();
-        if (!newTask.trim()) return;
-        setTasks([
-            ...tasks,
-            { id: Date.now(), title: newTask, status: "Pending" },
-        ]);
-        setNewTask("");
+                setUser(userResponse.data);
+                setTasks(tasksResponse.data);
+
+                // Fetch all users if admin
+                if (userResponse.data.role === 'admin') {
+                    const usersResponse = await api.get('/users');
+                    setAllUsers(usersResponse.data);
+                }
+            } catch (error) {
+                if (error.response?.status === 401) {
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                } else {
+                    console.error('Error fetching data:', error);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [navigate]);
+
+    const handleTaskCreate = async (newTask) => {
+        setTasks(prevTasks => [...prevTasks, newTask]);
     };
 
-    const handleStatusChange = (id, status) => {
-        setTasks(tasks.map(task =>
-            task.id === id ? { ...task, status } : task
-        ));
+    const handleTaskEdit = async (taskId, updatedTask) => {
+        setTasks(prevTasks => 
+            prevTasks.map(task => 
+                task._id === taskId ? updatedTask : task
+            )
+        );
     };
+
+    const handleTaskDelete = async (taskId) => {
+        setTasks(prevTasks => 
+            prevTasks.filter(task => task._id !== taskId)
+        );
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            </div>
+        );
+    }
 
     return (
-        <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-            <h1>Task Management Dashboard</h1>
-            <form onSubmit={handleAddTask} style={{ marginBottom: 24 }}>
-                <input
-                    type="text"
-                    placeholder="Add new task..."
-                    value={newTask}
-                    onChange={e => setNewTask(e.target.value)}
-                    style={{ padding: 8, width: "70%" }}
-                />
-                <button type="submit" style={{ padding: 8, marginLeft: 8 }}>Add</button>
-            </form>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                    <tr>
-                        <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Task</th>
-                        <th style={{ textAlign: "left", borderBottom: "1px solid #ddd", padding: 8 }}>Status</th>
-                        <th style={{ borderBottom: "1px solid #ddd", padding: 8 }}>Change Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tasks.map(task => (
-                        <tr key={task.id}>
-                            <td style={{ padding: 8 }}>{task.title}</td>
-                            <td style={{ padding: 8 }}>
-                                <span style={{
-                                    background: statusColors[task.status],
-                                    color: "#fff",
-                                    borderRadius: 4,
-                                    padding: "2px 8px",
-                                    fontSize: 14
-                                }}>
-                                    {task.status}
-                                </span>
-                            </td>
-                            <td style={{ padding: 8 }}>
-                                <select
-                                    value={task.status}
-                                    onChange={e => handleStatusChange(task.id, e.target.value)}
-                                >
-                                    <option>Pending</option>
-                                    <option>In Progress</option>
-                                    <option>Completed</option>
-                                </select>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="min-h-screen bg-gray-50">
+            <Navbar username={user?.username} role={user?.role} />
+            <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div className="mb-6">
+                    <div className="flex gap-4 border-b border-gray-200">
+                        <button
+                            className={`px-4 py-2 ${activeTab === 'tasks' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}
+                            onClick={() => setActiveTab('tasks')}
+                        >
+                            Tasks
+                        </button>
+                        <button
+                            className={`px-4 py-2 ${activeTab === 'profile' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}
+                            onClick={() => setActiveTab('profile')}
+                        >
+                            Profile
+                        </button>
+                        {user?.role === 'admin' && (
+                            <button
+                                className={`px-4 py-2 ${activeTab === 'users' ? 'border-b-2 border-indigo-600 text-indigo-600' : 'text-gray-500'}`}
+                                onClick={() => setActiveTab('users')}
+                            >
+                                Users
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {activeTab === 'tasks' && (
+                    <TaskList 
+                        tasks={tasks}
+                        onTaskCreate={handleTaskCreate}
+                        onTaskDelete={handleTaskDelete}
+                        onTaskEdit={handleTaskEdit}
+                        isAdmin={user?.role === 'admin'}
+                    />
+                )}
+
+                {activeTab === 'profile' && (
+                    <UserProfile 
+                        user={user}
+                        isAdmin={false}
+                        onUpdate={(updatedUser) => setUser(updatedUser)}
+                    />
+                )}
+
+                {activeTab === 'users' && user?.role === 'admin' && (
+                    <UserList />
+                )}
+            </main>
         </div>
     );
-}
+};
 
 export default Dashboard;

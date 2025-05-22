@@ -1,28 +1,64 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Register = ({ onRegister }) => {
+const Register = () => {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'user' // Default role
+        role: 'user'
     });
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
         setError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Form validation
         if (form.password !== form.confirmPassword) {
             setError('Passwords do not match');
             return;
         }
-        if (onRegister) onRegister(form);
+
+        try {
+            setLoading(true);
+            const response = await fetch('http://localhost:5000/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: form.username,
+                    email: form.email,
+                    password: form.password,
+                    role: form.role
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Registration failed');
+            }
+
+            // Store the token in localStorage
+            localStorage.setItem('token', data.token);
+            
+            // Navigate to dashboard or home page
+            navigate('/dashboard');
+            
+        } catch (err) {
+            setError(err.message || 'Something went wrong');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -111,9 +147,10 @@ const Register = ({ onRegister }) => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white font-bold py-3 px-10 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg text-lg"
+                        className="w-full bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white font-bold py-3 px-10 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg text-lg disabled:opacity-50"
+                        disabled={loading}
                     >
-                        Create Account
+                        {loading ? 'Creating Account...' : 'Create Account'}
                     </button>
                 </form>
                 <p className="mt-6 text-center text-gray-600">

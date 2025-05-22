@@ -34,3 +34,6 @@ temp/
 
 # System Files
 Thumbs.db
+
+uploads/*
+!uploads/.gitkeep
