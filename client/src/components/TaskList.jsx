@@ -23,7 +23,7 @@ const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) =>
             try {
                 const token = localStorage.getItem('token');
                 if (isAdmin) {
-                    const response = await fetch('http://localhost:5000/api/users', {
+                    const response = await fetch('${config.API_URL}/users', {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -31,7 +31,7 @@ const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) =>
                     const data = await response.json();
                     setUsers(data);
                 } else {
-                    const response = await fetch('http://localhost:5000/api/users/profile', {
+                    const response = await fetch('${config.API_URL}/users/profile', {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -157,7 +157,7 @@ const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) =>
         try {
             if (window.confirm('Are you sure you want to delete this task?')) {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+                const response = await fetch(`${config.API_URL}/tasks/${taskId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -178,7 +178,7 @@ const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) =>
     const handleEdit = async (taskId, updatedTask) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+            const response = await fetch(`${config.API_URL}/tasks/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

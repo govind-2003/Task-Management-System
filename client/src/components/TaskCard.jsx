@@ -192,7 +192,7 @@ const TaskCard = ({ task, onDelete, onEdit, isAdmin }) => {
                             </button>
                         </div>
                         <iframe
-                            src={`http://localhost:5000${selectedPdf.fileUrl}`}
+                            src={`${config.BASE_URL}${selectedPdf.fileUrl}`}
                             className="w-full h-[80vh]"
                             title={selectedPdf.fileName}
                         />
