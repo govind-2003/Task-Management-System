@@ -2,41 +2,54 @@
 
 A full-stack task management application built with MERN stack (MongoDB, Express.js, React, Node.js) that allows users to create, manage, and track tasks with file attachment capabilities.
 
-![Dashboard](./Pictures/Admin_Dashboard.png)
+<div align="center">
+  <img src="./Pictures/Home_Page.png" alt="Dashboard" width="800"/>
+</div>
 
-## Features
+## 🚀 Features
 
-- **User Authentication**
-  - Secure login and registration
-  - Role-based access (Admin/User)
-  - JWT token authentication
-  
-  ![Auth](./Pictures/Login_Page.png)
+### 🔐 User Authentication
+- Secure login and registration
+- Role-based access (Admin/User)
+- JWT token authentication
 
-- **Task Management**
-  - Create, read, update, and delete tasks
-  - Set priority levels (High, Medium, Low)
-  - Track task status (Pending, In-Progress, Completed)
-  - File attachments (PDF support, up to 3 files)
-  - Due date assignment
-  
-  ![Task Creation](./pictures/Create_Tasks.png)
+<p align="center">
+  <img src="./Pictures/Register_Page.png" alt="Register" width="400"/>
+  <img src="./Pictures/Login_Page.png" alt="Login" width="400"/>
+</p>
 
-- **Admin Features**
-  - User management
-  - Task assignment to different users
-  - View all tasks across users
-  
-  ![Admin Dashboard](./pictures/Admin_Dashboard.png)
+### 📋 Task Management
+- Create, read, update, and delete tasks
+- Set priority levels (High, Medium, Low)
+- Track task status (Pending, In-Progress, Completed)
+- File attachments (PDF support, up to 3 files)
+- Due date assignment
 
-- **User Features**
-  - Personal task dashboard
-  - Task filtering and sorting
-  - PDF file attachments
-  
-  ![Task Details](./pictures/Filter_Tasks.png)
+<div align="center">
+  <img src="./Pictures/Create_Tasks.png" alt="Task Creation" width="800"/>
+</div>
 
-## Technology Stack
+### 👑 Admin Features
+- User management
+- Task assignment to different users
+- View all tasks across users
+
+<p align="center">
+  <img src="./Pictures/Admin_Dashboard.png" alt="Admin Dashboard" width="400"/>
+  <img src="./Pictures/Users.png" alt="Users Management" width="400"/>
+</p>
+
+### 👤 User Features
+- Personal task dashboard
+- Task filtering and sorting
+- PDF file attachments
+
+<p align="center">
+  <img src="./Pictures/Filter_Tasks.png" alt="Task Filtering" width="400"/>
+  <img src="./Pictures/Sort_Tasks.png" alt="Task Sorting" width="400"/>
+</p>
+
+## 🛠️ Technology Stack
 
 - **Frontend**: React.js, TailwindCSS
 - **Backend**: Node.js, Express.js
@@ -45,16 +58,16 @@ A full-stack task management application built with MERN stack (MongoDB, Express
 - **Authentication**: JWT
 - **Containerization**: Docker
 
-## Prerequisites
+## ⚙️ Prerequisites
 
 - Node.js (v14 or higher)
 - MongoDB
 - Docker (optional)
 - Git
 
-## Installation
+## 📦 Installation
 
-### Using Docker (Recommended)
+### 🐳 Using Docker (Recommended)
 
 1. Clone the repository:
 ```bash
@@ -81,13 +94,13 @@ VITE_TOKEN_KEY=task_management_token
 docker-compose up --build
 ```
 
-The application will be available at:
+Access the application at:
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000
 
-### Manual Installation
+### 🔧 Manual Installation
 
-1. Clone the repository and install dependencies:
+1. Clone and install dependencies:
 ```bash
 git clone https://github.com/yourusername/task-management-system.git
 cd task-management-system
@@ -102,7 +115,7 @@ npm install
 ```
 
 2. Set up environment variables:
-   - Copy `.env.example` to `.env` in both frontend and backend directories
+   - Copy `.env.example` to `.env` in both directories
    - Update the variables with your values
 
 3. Start the application:
@@ -114,7 +127,7 @@ npm run dev
 npm run dev
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 task-management-system/
@@ -130,24 +143,11 @@ task-management-system/
 │   │   ├── services/     # API services
 │   │   └── styles/       # CSS styles
 │   └── public/           # Static files
-├── pictures/             # Project screenshots
+├── Pictures/             # Project screenshots
 └── docker-compose.yml    # Docker configuration
 ```
 
-## API Documentation
-
-### Authentication Endpoints
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - Get user profile
-
-### Task Endpoints
-- `GET /api/tasks` - Get all tasks
-- `POST /api/tasks` - Create new task
-- `PUT /api/tasks/:id` - Update task
-- `DELETE /api/tasks/:id` - Delete task
-
-## Contributing
+## 🔄 Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -155,17 +155,7 @@ task-management-system/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
-
-- TailwindCSS for the UI components
-- MongoDB Atlas for database hosting
-- Vercel for deployment platform
-
-## Contact
-
-Your Name - your.email@example.com
-Project Link: [https://github.com/yourusername/task-management-system](https://github.com/yourusername/task-management-system)
