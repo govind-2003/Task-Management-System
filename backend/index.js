@@ -15,13 +15,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: [
-        'http://localhost:5173', 
-        process.env.CORS_ORIGIN,
-        'https://task-management-system.vercel.app'
-    ],
+    origin: process.env.CORS_ORIGIN,
     credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,6 +31,57 @@ if (!fs.existsSync(uploadsDir)){
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Welcome route - add this before your other routes
+app.get('/', (req, res) => {
+    res.send(`
+        <html>
+            <head>
+                <title>Task Management System API</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        padding: 50px;
+                        background: #f0f2f5;
+                    }
+                    .container {
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        max-width: 600px;
+                        margin: 0 auto;
+                    }
+                    h1 {
+                        color: #4f46e5;
+                        margin-bottom: 20px;
+                    }
+                    .status {
+                        color: #10b981;
+                        font-size: 1.2em;
+                        margin: 20px 0;
+                    }
+                    .details {
+                        color: #6b7280;
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>🚀 Task Management System API</h1>
+                    <div class="status">✨ Backend Server is Running!</div>
+                    <div class="details">
+                        <p>Environment: ${process.env.NODE_ENV}</p>
+                        <p>Port: ${PORT}</p>
+                        <p>Server Time: ${new Date().toLocaleString()}</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
