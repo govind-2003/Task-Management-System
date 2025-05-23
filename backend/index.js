@@ -91,15 +91,11 @@ app.use('/api/users', userRoutes);
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
-        console.log('\x1b[36m%s\x1b[0m', '🌐 Connected to MongoDB');
+        console.log('Connected to MongoDB');
         
         // Start the server
         app.listen(PORT, () => {
-            console.log('\x1b[32m%s\x1b[0m', '✨ ============================== ✨');
-            console.log('\x1b[32m%s\x1b[0m', '      Backend is running! 🚀');
-            console.log('\x1b[32m%s\x1b[0m', `      Server Port: ${PORT}`);
-            console.log('\x1b[32m%s\x1b[0m', `      Environment: ${process.env.NODE_ENV || 'development'}`);
-            console.log('\x1b[32m%s\x1b[0m', '✨ ============================== ✨');
+            console.log(`Server is running at http://localhost:${PORT} in the ${process.env.NODE_ENV} Environment Mode`);
         });
     })
     .catch((err) => {

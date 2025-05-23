@@ -2,6 +2,10 @@
 
 A full-stack task management application built with MERN stack (MongoDB, Express.js, React, Node.js) that allows users to create, manage, and track tasks with file attachment capabilities.
 
+## 🔗 Quick Links
+- **Live Demo**: [Task Management System](https://task-manageer-frontend.vercel.app/)
+- **API Documentation**: [Postman Docs](https://documenter.getpostman.com/view/33089753/2sB2qajhS7)
+
 <div align="center">
   <img src="./Pictures/Home_Page.png" alt="Dashboard" width="800"/>
 </div>
