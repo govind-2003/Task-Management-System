@@ -11,7 +11,7 @@ A full-stack task management application built with MERN stack (MongoDB, Express
   - Role-based access (Admin/User)
   - JWT token authentication
   
-  ![Auth](./pictures/auth.png)
+  ![Auth](./Pictures/Login Page.png)
 
 - **Task Management**
   - Create, read, update, and delete tasks
