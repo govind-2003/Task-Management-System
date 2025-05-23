@@ -14,16 +14,16 @@ dotenv.config();
 // Create Express app
 const app = express();
 
+// Define PORT
+const PORT = process.env.PORT || 5000;
+
 // Middleware
-app.use(cors({
-    origin: [process.env.CORS_ORIGIN, 'https://your-frontend-url.vercel.app'],
-    credentials: true
-}));
+app.use(cors());  // Allow all origins in development
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configure uploads for Vercel
+// Configure uploads directory
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)){
     fs.mkdirSync(uploadsDir, { recursive: true });
@@ -32,7 +32,7 @@ if (!fs.existsSync(uploadsDir)){
 // Serve static files
 app.use('/uploads', express.static(uploadsDir));
 
-// Welcome route - add this before your other routes
+// Welcome route
 app.get('/', (req, res) => {
     res.send(`
         <html>
@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
                     <h1>🚀 Task Management System API</h1>
                     <div class="status">✨ Backend Server is Running!</div>
                     <div class="details">
-                        <p>Environment: ${process.env.NODE_ENV}</p>
+                        <p>Environment: ${process.env.NODE_ENV || 'development'}</p>
                         <p>Port: ${PORT}</p>
                         <p>Server Time: ${new Date().toLocaleString()}</p>
                     </div>
@@ -88,22 +88,22 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        environment: process.env.NODE_ENV,
-        timestamp: new Date().toISOString()
-    });
-});
-
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
-        console.log('Connected to MongoDB');
+        console.log('\x1b[36m%s\x1b[0m', '🌐 Connected to MongoDB');
+        
+        // Start the server
+        app.listen(PORT, () => {
+            console.log('\x1b[32m%s\x1b[0m', '✨ ============================== ✨');
+            console.log('\x1b[32m%s\x1b[0m', '      Backend is running! 🚀');
+            console.log('\x1b[32m%s\x1b[0m', `      Server Port: ${PORT}`);
+            console.log('\x1b[32m%s\x1b[0m', `      Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log('\x1b[32m%s\x1b[0m', '✨ ============================== ✨');
+        });
     })
     .catch((err) => {
-        console.error('MongoDB connection error:', err);
+        console.error('\x1b[31m%s\x1b[0m', '❌ MongoDB connection error:', err);
     });
 
 // Error handling middleware
@@ -115,13 +115,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Export the Express app
 module.exports = app;
-
-// Start server only in development
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-}
