@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb+srv://Govind:Govind2003@cluster0.yholsmc.mongodb.net/taskManager?retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET=govind1234
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  frontend:
+    build: ./client
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+      - VITE_BASE_URL=http://localhost:5000
+      - VITE_TOKEN_KEY=task_management_token
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped

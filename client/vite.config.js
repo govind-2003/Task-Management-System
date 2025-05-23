@@ -9,4 +9,22 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  server: {
+    host: true,
+    port: 5173,
+    watch: {
+      usePolling: true
+    },
+    strictPort: true
+  },
+  base: '/'
 })
