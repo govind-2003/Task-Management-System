@@ -13,7 +13,7 @@ const UserProfile = ({ user, isAdmin, onUpdate }) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${config.API_URL}/users/${isAdmin ? user._id : 'profile'}`, {
+            const response = await fetch(`http://localhost:5000/api/users/${isAdmin ? user._id : 'profile'}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -21,7 +21,7 @@ const TaskCard = ({ task, onDelete, onEdit, isAdmin }) => {
         // Make sure we're using the full URL from the backend and include /pdfs in the path
         const pdfUrl = pdf.fileUrl.startsWith('http') 
             ? pdf.fileUrl 
-            : `${config.BASE_URL}${pdf.fileUrl}`;
+            : `http://localhost:5000${pdf.fileUrl}`;
         
         window.open(pdfUrl, '_blank');
     };
@@ -192,7 +192,7 @@ const TaskCard = ({ task, onDelete, onEdit, isAdmin }) => {
                             </button>
                         </div>
                         <iframe
-                            src={`${config.BASE_URL}${selectedPdf.fileUrl}`}
+                            src={`http://localhost:5000${selectedPdf.fileUrl}`}
                             className="w-full h-[80vh]"
                             title={selectedPdf.fileName}
                         />
