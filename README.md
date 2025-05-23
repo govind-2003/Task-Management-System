@@ -2,7 +2,7 @@
 
 A full-stack task management application built with MERN stack (MongoDB, Express.js, React, Node.js) that allows users to create, manage, and track tasks with file attachment capabilities.
 
-![Dashboard](./pictures/Admin Dashboard.png)
+![Dashboard](./Pictures/Admin Dashboard.png)
 
 ## Features
 
