@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { config } from '../config/config';
 
 const TaskCard = ({ task, onDelete, onEdit, isAdmin }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -20,7 +21,7 @@ const TaskCard = ({ task, onDelete, onEdit, isAdmin }) => {
         // Make sure we're using the full URL from the backend and include /pdfs in the path
         const pdfUrl = pdf.fileUrl.startsWith('http') 
             ? pdf.fileUrl 
-            : `http://localhost:5000/uploads/pdfs${pdf.fileUrl.startsWith('/') ? '' : '/'}${pdf.fileUrl.split('/').pop()}`;
+            : `${config.BASE_URL}${pdf.fileUrl}`;
         
         window.open(pdfUrl, '_blank');
     };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import UserProfile from './UserProfile';
+import { config } from '../config/config';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const UserList = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/users', {
+            const response = await fetch(`${config.API_URL}/users`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

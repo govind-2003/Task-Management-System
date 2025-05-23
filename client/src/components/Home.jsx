@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Home = () => (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
         <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl p-12 transform hover:scale-[1.02] transition-transform duration-300">
-            <h1 className="text-5xl font-extrabold text-gray-800 text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500">
+            <h1 className="text-5xl font-extrabold text-gray-800 text-center mb-8 bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
                 Welcome to Task Management System
             </h1>
             <p className="text-xl text-gray-600 text-center mb-12 leading-relaxed">

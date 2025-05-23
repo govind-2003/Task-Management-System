@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TaskCard from './TaskCard';
+import { config } from '../config/config';
 
 const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) => {
     const [filter, setFilter] = useState('all');
@@ -116,7 +117,7 @@ const TaskList = ({ tasks, onTaskCreate, onTaskDelete, onTaskEdit, isAdmin }) =>
             }
 
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/tasks', {
+            const response = await fetch(`${config.API_URL}/tasks`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
